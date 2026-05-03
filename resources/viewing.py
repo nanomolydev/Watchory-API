@@ -4,7 +4,7 @@ from db import db
 from models.viewing import ViewingModel
 from schemas import PlainViewingSchema, ViewingSchema, EditViewingSchema
 
-blp = Blueprint("viewing", __name__, description="Операции с обьектом просмотра")
+blp = Blueprint("viewing", __name__, description="Viewing object operations")
 
 @blp.route("/viewings")
 class ViewingsListOperation(MethodView):
@@ -36,3 +36,14 @@ class ViewingOperation(MethodView):
             setattr(old_data, key,item)
         db.session.commit()
         return old_data
+
+    @blp.response(200, ViewingSchema)
+    def get(self, viewing_id):
+        find_el = ViewingModel.query.get_or_404(viewing_id)
+        return find_el
+
+    def delete(self, viewing_id):
+        find_el = ViewingModel.query.get_or_404(viewing_id)
+        db.session.delete(find_el)
+        db.session.commit()
+        return {"message": "Delete success"}, 200

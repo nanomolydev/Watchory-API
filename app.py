@@ -3,6 +3,7 @@ from flask_smorest import Api
 from db import db
 import models
 from resources.viewing import blp as ViewingBlueprint
+from resources.collection import blp as CollectionBlueprint
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
@@ -19,4 +20,5 @@ def create_app():
         db.create_all()
 
     app.register_blueprint(ViewingBlueprint)
+    app.register_blueprint(CollectionBlueprint)
     return app
