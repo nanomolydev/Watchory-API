@@ -4,7 +4,11 @@ from db import db
 import models
 from resources.viewing import blp as ViewingBlueprint
 from resources.collection import blp as CollectionBlueprint
+from dotenv import load_dotenv
+
+
 def create_app():
+    load_dotenv()
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
