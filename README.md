@@ -18,6 +18,7 @@ Python, Flask, Flask-Smorest, Flask-Sqlalchemy, marshmallow
 Скачать python3.10+
 
  `git clone https://github.com/nanomolydev/Watchory-API.git`
+ 
  `cd Watchory-API`
 
 создаем виртуальное окружение:
