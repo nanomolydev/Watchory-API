@@ -2,15 +2,15 @@ from enum import Enum
 from marshmallow import fields, Schema, validate
 
 class StatusOfViewing(str, Enum):
-    watching = 'watching',
-    watched = 'watched',
-    planned = 'planned',
+    watching = 'watching'
+    watched = 'watched'
+    planned = 'planned'
     dropped = 'dropped'
 
 class TypeOfViewing(str, Enum):
-    book = 'book',
-    film = 'film',
-    anime = 'anime',
+    book = 'book'
+    film = 'film'
+    anime = 'anime'
     course = 'course'
 class TMDBViewingSchema(Schema):
     id = fields.Int(dump_only=True, required=False)
