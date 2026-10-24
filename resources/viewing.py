@@ -16,12 +16,6 @@ blp = Blueprint("viewing", __name__, description="Viewing object operations")
 
 @blp.route("/viewings")
 class ViewingsListOperation(MethodView):
-    @blp.arguments(PlainViewingSchema)
-    def post(self, viewing_data):
-        new_viewing = ViewingModel(**viewing_data)
-        db.session.add(new_viewing)
-        db.session.commit()
-        return {"message": "Viewing created"}, 201
     @blp.response(200, ViewingSchema(many=True))
     def get(self):
         all_viewings = ViewingModel.query.all()
@@ -68,13 +62,14 @@ class ViewingSearchOperation(MethodView):
             "page": 1,
             "include_adult": False
         }
-        if(find_viewing.type=='film'):
-            response = requests.get(
-                "https://api.themoviedb.org/3/search/movie",
-                headers=headers,
-                params=data
-            )
-            data = response.json()
+        response = requests.get(
+            "https://api.themoviedb.org/3/search/multi",
+            headers=headers,
+            params=data
+        )
+        data = response.json()
+        if(data.get('status_code', 200) == 200):
+
             results = data.get('results', [])
             all_tmdb_el = []
             for i in results:
@@ -88,7 +83,7 @@ class ViewingSearchOperation(MethodView):
             db.session.commit()
             return all_tmdb_el
         else:
-            return {"message": "Not implemented"}, 501
+            return [{"message": data.get("status_message", None)}], 400
 
 @blp.route("/viewings/<int:viewing_id>/tmdb-search-results/<int:tmdb_id>/select")
 class ViewingTmdbOperation(MethodView):

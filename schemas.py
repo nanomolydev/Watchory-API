@@ -16,6 +16,7 @@ class TMDBViewingSchema(Schema):
     id = fields.Int(dump_only=True, required=False)
     img = fields.Str(required=True,dump_only=True)
     overview = fields.Str(required=False, dump_only=True)
+    message = fields.Str(required=False, dump_only=True)
 class PlainCollectionSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.Str(required=True)

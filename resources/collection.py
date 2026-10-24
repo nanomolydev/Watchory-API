@@ -1,7 +1,7 @@
 from flask_smorest import Blueprint
 from flask.views import MethodView
-from schemas import PlainCollectionSchema, CollectionSchema, ViewingSchema
-from models import CollectionModel
+from schemas import PlainCollectionSchema, CollectionSchema, ViewingSchema,PlainViewingSchema
+from models import CollectionModel, ViewingModel
 from db import db
 blp = Blueprint("collection", __name__, description="Collection object operations")
 
@@ -23,7 +23,14 @@ class CollectionListOperation(MethodView):
 
 @blp.route("/collections/<int:collection_id>")
 class CollectionOperation(MethodView):
-
+    @blp.arguments(PlainCollectionSchema)
+    @blp.response(200, CollectionSchema)
+    def patch(self, collection_data,collection_id):
+        old_data = CollectionModel.query.get_or_404(collection_id)
+        for key, item in collection_data.items():
+            setattr(old_data, key,item)
+        db.session.commit()
+        return old_data
 
     @blp.response(200, CollectionSchema)
     def get(self, collection_id):
@@ -38,7 +45,14 @@ class CollectionOperation(MethodView):
 
 @blp.route("/collections/<int:collection_id>/viewings")
 class GetViewings(MethodView):
-    @blp.response(200, ViewingSchema)
+    @blp.arguments(PlainViewingSchema)
+    def post(self, viewing_data, collection_id):
+        viewing_data['collection_id'] = collection_id
+        new_viewing = ViewingModel(**viewing_data)
+        db.session.add(new_viewing)
+        db.session.commit()
+        return {"message": "Viewing created"}, 201
+    @blp.response(200, ViewingSchema(many=True))
     def get(self, collection_id):
         collection = CollectionModel.query.get_or_404(collection_id)
         return collection.viewings
