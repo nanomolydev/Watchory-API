@@ -17,7 +17,7 @@ Python, Flask, Flask-Smorest, Flask-Sqlalchemy, marshmallow
 
 Скачать python3.10+
 
- ```git clone https://github.com/nanomolydev/Watchory-API.git.```
+ ```git clone https://github.com/nanomolydev/Watchory-API.git```
 
 создаем виртуальное окружение:
 
@@ -43,8 +43,8 @@ python -m venv .venv
 Запуск:
 `flask run`
 
-## Основные ендпоинты
-![Ендпоинты](screenshots/1.png)
+## Основные эндпоинты
+![Эндпоинты](screenshots/1.png)
 
 ### Collections (Коллекции)
 
@@ -85,4 +85,4 @@ python -m venv .venv
 | book   | Книга    |
 | film   | Фильм    |
 | anime  | Аниме    |
-| course | Сериал   |
+| course | Курс   |
